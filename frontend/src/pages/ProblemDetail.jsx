@@ -4,6 +4,8 @@ import axios from "axios";
 import CodeEditor from "../components/CodeEditor";
 // import Loader from "../components/Loader";
 import "../styles/ProblemDetail.css";
+import { Bookmark, BookmarkCheck } from "lucide-react";
+
 
 const ProblemDetail = () => {
   const { titleSlug } = useParams();
@@ -17,6 +19,7 @@ const ProblemDetail = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const backend = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000"; 
   const LEETCODE_API = `https://leetcode-api-mu.vercel.app/select?titleSlug=${titleSlug}`;
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
     // Redirect to the login page if the user is not authenticated
@@ -39,6 +42,22 @@ const ProblemDetail = () => {
     }
     fetchProblem();
   }, [titleSlug]);
+
+  
+ useEffect(() => {
+  const checkBookmark = async () => {
+    try {
+      const token = localStorage.getItem("jwtoken");
+      const res = await axios.get(`http://localhost:3000/bookmarks`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setIsBookmarked(res.data.bookmarks.includes(titleSlug));
+    } catch (err) {
+      console.error("Error checking bookmark:", err);
+    }
+  };
+  checkBookmark();
+}, [titleSlug]);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -81,6 +100,21 @@ const ProblemDetail = () => {
       setIsSubmitting(false);
     }
   };
+  
+    const toggleBookmark = async () => {
+  try {
+    const token = localStorage.getItem("jwtoken");
+    await axios.post(
+      `http://localhost:3000/bookmarks/toggle`,
+      { problemSlug: titleSlug },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setIsBookmarked((prev) => !prev);
+  } catch (err) {
+    console.error("Error toggling bookmark:", err);
+  }
+};
+
 
   const handleViewDiscussions = () => {
     navigate(`/discussions/${titleSlug}`);
@@ -114,7 +148,16 @@ const ProblemDetail = () => {
         <div className="panel">
           {data && (
             <>
-              <h1 className="problem-title">{data.questionTitle}</h1>
+              <div className="problem-title">{data.questionTitle}
+
+              <button   
+                          onClick={toggleBookmark}
+                          className={`bookmark-button ${isBookmarked ? "bookmarked" : ""}`}
+                        >
+                          {isBookmarked ? <BookmarkCheck className="icon" /> : <Bookmark className="icon" />}
+                </button>
+              </div>
+
               <h2 className="difficulty-text">
                 Difficulty:{" "}
                 <span className={getDifficultyClass(data.difficulty)}>
