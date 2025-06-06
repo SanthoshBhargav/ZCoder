@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+ :root {
+  --primary-background: #f9f4ef;
+  --secondary-background: #fffffe;
+  --primary-accent: #020826;
+  --secondary-accent: #716040;
+  --success: #34C759;
+  --error: #FF4C4C;
+  --text-primary: #020826;
+  --text-secondary: #716040;
+  --highlight: #8c7851;
+}
+
+body {
+  background: var(--primary-background);
+  color: var(--text-primary);
+}
+
+.App {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: linear-gradient(135deg, var(--primary-background) 0%, var(--secondary-background) 100%);
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 8px;  /* Vertical scrollbar width */
+  height: 8px; /* Horizontal scrollbar height */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--secondary-background);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-accent);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--highlight);
+}
