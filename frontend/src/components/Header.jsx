@@ -52,11 +52,11 @@ function Header() {
         </ul>
           <img src={Logo} alt="Logo" className="nav-logo" onClick={changeTheme}/>
         <ul className={`nav-links${menuOpen ? " show" : ""}`}>
-          <li><NavLink to="/calendar" onClick={handleLinkClick}>Calender</NavLink></li>
+          <li><NavLink to="/calendar" onClick={handleLinkClick}>Calendar</NavLink></li>
           <li><NavLink to="/askAi" onClick={handleLinkClick}>Ask AI</NavLink></li>
           <li><NavLink to="/profile" onClick={handleLinkClick}>Profile</NavLink></li>
           <li className="logout-btn">
-            <NavLink to="#" onClick={() => { handleLogout(); handleLinkClick(); }}>Logout</NavLink>
+            <NavLink to="#" onClick={() => { handleLogout() }}>Logout</NavLink>
           </li>
         </ul>
       </nav>

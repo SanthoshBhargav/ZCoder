@@ -93,6 +93,7 @@ function Home() {
       </div>
     <div className="home-page">
       {/* Hero Section */}
+      <p className="theme-slide">Click on the logo to change Theme</p>
       <main className="main-content">
         <section className="hero-section">
           <div className="hero-text">

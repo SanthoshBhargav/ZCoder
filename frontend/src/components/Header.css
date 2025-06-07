@@ -48,6 +48,7 @@ nav {
     margin-right: 1rem;
     margin-top: 2rem;
     border: 2px solid var(--primary-accent);
+    cursor: pointer;
 }
 
 /* Hamburger */
@@ -169,6 +170,8 @@ nav {
 
     .nav-logo {
         height: 32px;
+        position: absolute;
+        left: 0.7rem;
     }
 
     .hamburger {

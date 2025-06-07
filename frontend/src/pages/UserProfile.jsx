@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/UserProfile.css';
 import EditProfile from '../components/EditProfile';
+import { useNavigate } from 'react-router-dom';
 import Toast from '../components/Toast';
 
 const UserProfile = () => {
@@ -24,6 +25,14 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const jwtoken = localStorage.getItem('jwtoken');
+    if (!jwtoken) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   // Auto-dismiss toast after 3 seconds
   useEffect(() => {
