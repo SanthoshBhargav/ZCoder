@@ -62,15 +62,14 @@ const ProblemCard = ({
   return (
     <div className="problem-card" onClick={onClick}>
       <div className="card-header">
-        <span className="problem-id">#{id}</span>
-        <span className="problem-title">{title}</span>
-        {locked && <span className="locked-icon">🔒</span>}
         <button
           onClick={toggleBookmark}
           className={`bookmark-button ${isBookmarked ? "bookmarked" : ""}`}
         >
           {isBookmarked ? <BookmarkCheck className="icon" /> : <Bookmark className="icon" />}
         </button>
+        <span className="problem-title">{title}</span>
+        {locked && <span className="locked-icon">🔒</span>}
       </div>
 
       <div className="card-info">

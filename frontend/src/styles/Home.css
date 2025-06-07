@@ -110,6 +110,8 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 .primary-btn, .secondary-btn {
@@ -229,6 +231,7 @@
 .feature-tab.active {
   background: var(--secondary-background);
   border-color: var(--primary-accent);
+  color: var(--text-teritary)
 }
 
 .feature-icon {
@@ -238,6 +241,10 @@
 .feature-title {
   font-weight: 600;
   color: var(--text-primary);
+  text-align: center;
+}
+.feature-tab.active .feature-title{
+  color: var(--text-teritary);
 }
 
 .feature-content {
@@ -249,7 +256,7 @@
   padding: 2rem;
   position: relative;
   border-radius: 10px;
-  color: var(--text-secondary);
+  color: var(--text-teritary);
   animation: fadeIn 0.5s ease;
   background: var(--secondary-background);
   text-shadow: 1px 1px 0 var(--primary-background);
@@ -318,7 +325,7 @@
 }
 
 .stat-card p {
-  color: var(--text-secondary);
+  color: var(--text-teritary);
 }
 
 /* Footer */
