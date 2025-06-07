@@ -24,7 +24,6 @@ function Header() {
   return (
     <header className="navbar">
       <nav>
-        <img src={Logo} alt="Logo" className="nav-logo" />
         <button
           className={`hamburger${menuOpen ? " active" : ""}`}
           aria-label="Toggle navigation menu"
@@ -40,6 +39,10 @@ function Header() {
           <li><NavLink to="/" onClick={handleLinkClick}>Home</NavLink></li>
           <li><NavLink to="/dashboard" onClick={handleLinkClick}>Dashboard</NavLink></li>
           <li><NavLink to="/rooms" onClick={handleLinkClick}>Rooms</NavLink></li>
+          <li><NavLink to="/code-editor" onClick={handleLinkClick}>Online IDE</NavLink></li>
+        </ul>
+        <ul className={`nav-links${menuOpen ? " show" : ""}`}>
+          <img src={Logo} alt="Logo" className="nav-logo" />
           <li><NavLink to="/calendar" onClick={handleLinkClick}>Calender</NavLink></li>
           <li><NavLink to="/askAi" onClick={handleLinkClick}>Ask AI</NavLink></li>
           <li><NavLink to="/profile" onClick={handleLinkClick}>Profile</NavLink></li>
