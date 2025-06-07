@@ -15,6 +15,7 @@ import Header from "./components/Header";
 import UserProfile from './pages/UserProfile';
 import FriendsProfile from "./pages/FriendsProfile";
 import Bookmarks from "./pages/Bookmarks";
+import SoloCodeEditor from "./components/SoloCodeEditor";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/user/:id" element={<FriendsProfile />} />
         <Route path="/bookmarks" element={<Bookmarks/>} />
+        <Route path="/code-editor" element={<SoloCodeEditor />} />
       </Routes>
     </BrowserRouter>
   );

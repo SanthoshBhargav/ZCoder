@@ -20,7 +20,13 @@ router.post("/register/", async (request, response) => {
       const newUser = new User({
         Username: username,
         HashedPassword: hashedPassword,
-        Email: email,
+        email: email,
+        codeforcesHandle: "",
+        name: '',
+        phoneNumber: '',
+        profilePicture: 'https://static.vecteezy.com/system/resources/thumbnails/019/879/186/small_2x/user-icon-on-transparent-background-free-png.png',
+        programmingLanguages: [],
+        skills: []
       });
       const dbResponse = await User.create(newUser);
       response.status(200);
