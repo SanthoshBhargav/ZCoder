@@ -1,44 +1,145 @@
-// 30-05-2025 8:00 pm
+// 06-06-2025 06:30 pm 
 
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
 
 const EditProfile = ({ userData, onUpdate, showToast }) => {
-  // Local state for editable fields (initialize with current user data)
-  const [formData, setFormData] = useState({ ...userData });
-  // Local state for password section
-  const [passwords, setPasswords] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
+  // Initialize form data with user info or defaults
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phoneNumber: '',
+    profilePicture: '',
+    role: '',
+    location: '',
+    codeforcesHandle: '',
+    skills: [],
+    degrees: [],
+    experience: [],
+    languages: [],
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
   });
 
-  // Cancel should reset edits to original data
-  const handleCancel = () => {
-    setFormData({ ...userData });
-    setPasswords({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
-    if (typeof onUpdate === "function") {
-      onUpdate(userData); // Just to exit edit mode
+  // Fill form with user data on mount or when userData changes
+  useEffect(() => {
+    if (userData) {
+      setFormData(prev => ({
+        ...prev,
+        ...userData,
+        skills: userData.skills || [],
+        degrees: userData.degrees || [],
+        experience: userData.experience || [],
+        languages: userData.languages || [],
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      }));
     }
-  };
+  }, [userData]);
 
-  // Handle profile field changes
-  const handleChange = (e) => {
+  // Handle input changes for regular fields
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle password field changes
+  // --- Skill Management ---
+  const addSkill = () => {
+    setFormData(prev => ({
+      ...prev,
+      skills: [...prev.skills, { name: '', level: 80 }],
+    }));
+  };
+  const removeSkill = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      skills: prev.skills.filter((_, i) => i !== index),
+    }));
+  };
+  const handleSkillChange = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      skills: prev.skills.map((skill, i) =>
+        i === index ? { ...skill, [field]: value } : skill
+      ),
+    }));
+  };
+
+  // --- Degree Management ---
+  const addDegree = () => {
+    setFormData(prev => ({
+      ...prev,
+      degrees: [...prev.degrees, { title: '', institution: '' }],
+    }));
+  };
+  const removeDegree = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      degrees: prev.degrees.filter((_, i) => i !== index),
+    }));
+  };
+  const handleDegreeChange = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      degrees: prev.degrees.map((deg, i) =>
+        i === index ? { ...deg, [field]: value } : deg
+      ),
+    }));
+  };
+
+  // --- Experience Management ---
+  const addExperience = () => {
+    setFormData(prev => ({
+      ...prev,
+      experience: [...prev.experience, { role: '', period: '', company: '' }],
+    }));
+  };
+  const removeExperience = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      experience: prev.experience.filter((_, i) => i !== index),
+    }));
+  };
+  const handleExperienceChange = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      experience: prev.experience.map((exp, i) =>
+        i === index ? { ...exp, [field]: value } : exp
+      ),
+    }));
+  };
+
+  // --- Language Management ---
+  const addLanguage = () => {
+    setFormData(prev => ({
+      ...prev,
+      languages: [...prev.languages, { name: '', level: 0, fluency: '' }],
+    }));
+  };
+  const removeLanguage = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      languages: prev.languages.filter((_, i) => i !== index),
+    }));
+  };
+  const handleLanguageChange = (index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      languages: prev.languages.map((lang, i) =>
+        i === index ? { ...lang, [field]: value } : lang
+      ),
+    }));
+  };
+
+  // --- Handle Password Change ---
+
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    setPasswords((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle profile picture file input
+ // Handle profile picture file input
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -50,194 +151,212 @@ const EditProfile = ({ userData, onUpdate, showToast }) => {
     }
   };
 
-  // Save profile changes (excluding password)
-  const handleSaveProfile = async (e) => {
+  // --- Form Submission ---
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const jwtoken = localStorage.getItem("jwtoken");
-      if (!jwtoken) {
-        throw new Error("No authentication token found");
-      }
-
-      const response = await axios.post(
-        "http://localhost:3000/user/profile/update", // Correct endpoint
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${jwtoken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.data.message) {
-        showToast && showToast(response.data.message);
-        onUpdate && onUpdate(response.data.user);
-      }
-    } catch (err) {
-      console.error("Update error:", err);
-      showToast &&
-        showToast(err.response?.data?.error || "Failed to update profile");
-    }
+    onUpdate(formData);
   };
 
-  // Save password changes
-  const handleSavePassword = async (e) => {
-    e.preventDefault();
-    try {
-      if (passwords.newPassword !== passwords.confirmPassword) {
-        throw new Error("Passwords don't match");
-      }
-
-      const token = localStorage.getItem("jwtoken");
-      if (!token) {
-        throw new Error("No authentication token found");
-      }
-
-      const response = await axios.post(
-        "http://localhost:3000/user/profile/update-password",
-        {
-          currentPassword: passwords.currentPassword,
-          newPassword: passwords.newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      showToast &&
-        showToast(response.data.message || "Password updated successfully");
-      setPasswords({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      });
-
-      // Exit edit mode after successful password update
-      if (typeof onUpdate === "function") {
-        onUpdate(); // This will set isEditing to false in UserProfile
-      }
-    } catch (err) {
-      console.error("Password update error:", err);
-      showToast &&
-        showToast(
-          err.response?.data?.error ||
-            err.message ||
-            "Failed to update password"
-        );
-    }
-  };
-
+  // --- Render ---
   return (
     <div className="edit-profile-container">
       <h2>Edit Profile</h2>
-      {/* Profile Fields Section */}
-      <form onSubmit={handleSaveProfile}>
-        <div className="edit-section">
-          <div className="form-group">
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              autoComplete="off"
-            />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              autoComplete="off"
-            />
-          </div>
-          <div className="form-group">
-            <label>Phone Number</label>
-            <input
-              type="text"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              autoComplete="off"
-            />
-          </div>
-          <div className="form-group">
-            <label>Profile Picture</label>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-          </div>
-          <div className="form-group">
-            <label>Codeforces Handle</label>
-            <input
-              type="text"
-              name="codeforcesHandle"
-              value={formData.codeforcesHandle}
-              onChange={handleChange}
-              autoComplete="off"
-            />
-          </div>
-          <div className="form-group">
-            <label>Programming Languages (comma separated)</label>
-            <input
-              type="text"
-              name="programmingLanguages"
-              value={(formData.programmingLanguages || []).join(", ")}
-              onChange={(e) => {
-                const langs = e.target.value.split(",").map((l) => l.trim());
-                setFormData((prev) => ({
-                  ...prev,
-                  programmingLanguages: langs,
-                }));
-              }}
-              autoComplete="off"
-            />
-          </div>
-          <div className="form-group">
-            <label>Skills (comma separated)</label>
-            <input
-              type="text"
-              name="skills"
-              value={(formData.skills || []).join(", ")}
-              onChange={(e) => {
-                const skills = e.target.value.split(",").map((s) => s.trim());
-                setFormData((prev) => ({
-                  ...prev,
-                  skills,
-                }));
-              }}
-              autoComplete="off"
-            />
-          </div>
-
-          {/* Save and Cancel Buttons */}
-          <div className="button-row">
-            <button type="submit" className="update-btn">
-              Save Changes
-            </button>
-            <button type="button" className="cancel-btn" onClick={handleCancel}>
-              Cancel
-            </button>
-          </div>
+      <form onSubmit={handleSubmit}>
+        {/* Basic Info */}
+        <div className="form-group">
+          <label>Name</label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
         </div>
-      </form>
+        <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Phone Number</label>
+          <input
+            type="text"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Profile Picture URL</label>
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+        </div>
+        <div className="form-group">
+          <label>Role</label>
+          <input
+            type="text"
+            name="role"
+            value={formData.role}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Location</label>
+          <input
+            type="text"
+            name="location"
+            value={formData.location}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Codeforces Handle</label>
+          <input
+            type="text"
+            name="codeforcesHandle"
+            value={formData.codeforcesHandle}
+            onChange={handleInputChange}
+          />
+        </div>
 
-      {/* Password Change Section */}
-      <form onSubmit={handleSavePassword}>
-        <div className="edit-section password-section">
-          <h3>Change Password</h3>
+        {/* Skills */}
+        <div className="form-group">
+          <label>Skills</label>
+          {formData.skills.map((skill, idx) => (
+            <div key={idx} className="edit-array-item">
+              <input
+                type="text"
+                placeholder="Skill Name"
+                value={skill.name}
+                onChange={(e) => handleSkillChange(idx, 'name', e.target.value)}
+              />
+              <input
+                type="number"
+                placeholder="Level (0-100)"
+                min="0"
+                max="100"
+                value={skill.level}
+                onChange={(e) => handleSkillChange(idx, 'level', e.target.value)}
+              />
+              <button type="button" className="remove-btn" onClick={() => removeSkill(idx)}>
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" className="add-btn" onClick={addSkill}>
+            Add Skill
+          </button>
+        </div>
+
+        {/* Degrees */}
+        <div className="form-group">
+          <label>Degrees</label>
+          {formData.degrees.map((deg, idx) => (
+            <div key={idx} className="edit-array-item">
+              <input
+                type="text"
+                placeholder="Title"
+                value={deg.title}
+                onChange={(e) => handleDegreeChange(idx, 'title', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Institution"
+                value={deg.institution}
+                onChange={(e) => handleDegreeChange(idx, 'institution', e.target.value)}
+              />
+              <button type="button" className="remove-btn" onClick={() => removeDegree(idx)}>
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" className="add-btn" onClick={addDegree}>
+            Add Degree
+          </button>
+        </div>
+
+        {/* Experience */}
+        <div className="form-group">
+          <label>Experience</label>
+          {formData.experience.map((exp, idx) => (
+            <div key={idx} className="edit-array-item">
+              <input
+                type="text"
+                placeholder="Role"
+                value={exp.role}
+                onChange={(e) => handleExperienceChange(idx, 'role', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Period"
+                value={exp.period}
+                onChange={(e) => handleExperienceChange(idx, 'period', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Company"
+                value={exp.company}
+                onChange={(e) => handleExperienceChange(idx, 'company', e.target.value)}
+              />
+              <button type="button" className="remove-btn" onClick={() => removeExperience(idx)}>
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" className="add-btn" onClick={addExperience}>
+            Add Experience
+          </button>
+        </div>
+
+        {/* Languages */}
+        <div className="form-group">
+          <label>Languages</label>
+          {formData.languages.map((lang, idx) => (
+            <div key={idx} className="edit-array-item">
+              <input
+                type="text"
+                placeholder="Language"
+                value={lang.name}
+                onChange={(e) => handleLanguageChange(idx, 'name', e.target.value)}
+              />
+              <input
+                type="number"
+                placeholder="Level (0-100)"
+                min="0"
+                max="100"
+                value={lang.level}
+                onChange={(e) => handleLanguageChange(idx, 'level', e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Fluency"
+                value={lang.fluency}
+                onChange={(e) => handleLanguageChange(idx, 'fluency', e.target.value)}
+              />
+              <button type="button" className="remove-btn" onClick={() => removeLanguage(idx)}>
+                Remove
+              </button>
+            </div>
+          ))}
+          <button type="button" className="add-btn" onClick={addLanguage}>
+            Add Language
+          </button>
+        </div>
+
+        {/* Change Password Section */}
+        <div className="password-section">
+          <h3>CHANGE PASSWORD</h3>
+          <br></br>
           <div className="form-group">
             <label>Current Password</label>
             <input
               type="password"
               name="currentPassword"
-              value={passwords.currentPassword}
+              value={formData.currentPassword}
               onChange={handlePasswordChange}
-              autoComplete="off"
             />
           </div>
           <div className="form-group">
@@ -245,9 +364,8 @@ const EditProfile = ({ userData, onUpdate, showToast }) => {
             <input
               type="password"
               name="newPassword"
-              value={passwords.newPassword}
+              value={formData.newPassword}
               onChange={handlePasswordChange}
-              autoComplete="off"
             />
           </div>
           <div className="form-group">
@@ -255,17 +373,16 @@ const EditProfile = ({ userData, onUpdate, showToast }) => {
             <input
               type="password"
               name="confirmPassword"
-              value={passwords.confirmPassword}
+              value={formData.confirmPassword}
               onChange={handlePasswordChange}
-              autoComplete="off"
             />
           </div>
-          <div className="button-row">
-            <button type="submit" className="update-btn">
-              Save Password
-            </button>
-          </div>
         </div>
+
+        {/* Submit Button */}
+        <button type="submit" className="update-btn">
+          Save Profile
+        </button>
       </form>
     </div>
   );

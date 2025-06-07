@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import "../styles/rooms.css";
 import io from "socket.io-client";
-import CodeEditor from "../components/CodeEditor";
+import SoloCodeEditor from "../components/SoloCodeEditor";
 
 function RoomPage() {
   const location = useLocation();
@@ -170,7 +170,7 @@ function RoomPage() {
               <h3>Collaborative Editor</h3>
               <hr />
             </div>
-            <CodeEditor
+            <SoloCodeEditor
               value={sharedText}
               onChange={handleTextChange}
               inputValue={sharedInput}

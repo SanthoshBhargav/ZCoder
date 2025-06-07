@@ -21,6 +21,15 @@ function Header() {
     setMenuOpen(false);
   };
 
+  const changeTheme = ()=>{
+    const body = document.body;
+    console.log(body);
+    const currentTheme = localStorage.getItem("theme") || "style-1";
+    const newTheme = "style-" + (currentTheme.split("-")[1] % 3 +1);
+    localStorage.setItem("theme", newTheme);
+    body.classList = newTheme;
+  }
+
   return (
     <header className="navbar">
       <nav>
@@ -41,8 +50,8 @@ function Header() {
           <li><NavLink to="/rooms" onClick={handleLinkClick}>Rooms</NavLink></li>
           <li><NavLink to="/code-editor" onClick={handleLinkClick}>Online IDE</NavLink></li>
         </ul>
+          <img src={Logo} alt="Logo" className="nav-logo" onClick={changeTheme}/>
         <ul className={`nav-links${menuOpen ? " show" : ""}`}>
-          <img src={Logo} alt="Logo" className="nav-logo" />
           <li><NavLink to="/calendar" onClick={handleLinkClick}>Calender</NavLink></li>
           <li><NavLink to="/askAi" onClick={handleLinkClick}>Ask AI</NavLink></li>
           <li><NavLink to="/profile" onClick={handleLinkClick}>Profile</NavLink></li>
