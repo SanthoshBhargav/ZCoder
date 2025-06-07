@@ -23,6 +23,24 @@
   z-index: 1;
 }
 
+.theme-slide{
+  position: fixed;
+  top: 10vh;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  animation: theme-slide 10s ease-in-out forwards;
+}
+
+@keyframes theme-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
 .main-content {
   flex: 1;
   padding: 2rem 5%;
@@ -433,6 +451,10 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .theme-slide{
+    animation: theme-slide 6s forwards ease-in-out;
+  }
+
   .hero-section {
     flex-direction: row;
     justify-content: space-between;
@@ -459,6 +481,9 @@
 }
 
 @media (max-width: 480px) {
+  .theme-slide{
+    animation: theme-slide 4s forwards ease-in-out;
+  }
   .cta-buttons {
     flex-direction: column;
   }

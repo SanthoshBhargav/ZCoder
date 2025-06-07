@@ -311,7 +311,7 @@ function Dashboard() {
           disabled={filteredProblems.length === 0}
           className="random-problem-button"
         >
-          Pick Random Problem
+        <span className="problem-dice">🎲</span> Pick Random Problem
         </button>
       </div>
 

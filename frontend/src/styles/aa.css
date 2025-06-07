@@ -25,6 +25,7 @@
 .ask-ai-container .message {
   margin-bottom: 15px;
   display: flex;
+  color: var(--text-primary);
 }
 
 .ask-ai-container .message.user {
@@ -53,7 +54,7 @@
 
 .ask-ai-container .ai .message-content {
   background: #fffffe;
-  color: #2b2c34;
+  color: var(--text-primary);
   border: 1px solid rgba(98, 70, 234, 0.1);
   border-top-left-radius: 0;
 }
@@ -75,7 +76,7 @@
   border: 2px solid #6246ea;
   border-radius: 10px;
   background: #fffffe;
-  color: #2b2c34;
+  color: var(--text-primary);
   font-size: 1rem;
   transition: border 0.3s, background 0.3s;
 }

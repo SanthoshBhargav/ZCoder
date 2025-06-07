@@ -15,9 +15,8 @@
   padding: 2.5rem 2rem;
 }
 
-/* --- Profile Header Styling --- */
-/* Contains avatar, name, role, contact info, and edit button */
 .profile-header {
+  
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -106,6 +105,7 @@
   margin-top: 0;
   font-weight: 700;
   letter-spacing: 0.5px;
+  color: var(--text-secondary);
 }
 
 /* --- Skills Section --- */
@@ -151,7 +151,7 @@
 
 .degree-card {
   background: #5a4ff3;
-  color: #fff;
+  color: var(--primary-background);
   border-radius: 14px;
   padding: 1.1rem 1.2rem;
   font-weight: 600;
@@ -220,13 +220,7 @@
 /* --- Codeforces Info Section --- */
 
 .profile-section.codeforces {
-  /* background: var(--secondary-background);
- 
-  background-color: #f0f7f7;
-  border-radius: 16px;
-  padding: 1.5rem 2rem;
-  /* box-shadow: 0px 0px 0px 3px black; */
-  background: rgb(234, 234, 242);
+  background: var(--secondary-background); 
   border-radius: 16px;
   padding: 1.5rem 2rem;
   border-left: 6px solid black;
@@ -410,7 +404,9 @@
   .profile-section {
     padding: 1.2rem 1.5rem;
     margin-bottom: 1rem;
+    color: var(--text-primary);
   }
+
 
   
   .skill-bar {
