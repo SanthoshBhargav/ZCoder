@@ -17,6 +17,12 @@ function Home() {
     }
   }, [navigate]);
 
+  const navigateToUser = (username) => {
+    console.log("clickjed")
+    // const username = e.target.closest('.user-item').querySelector('.user-name').textContent;
+    navigate(`/user/${username}`);
+  };
+
   const searched = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -124,7 +130,7 @@ function Home() {
               {users==='No users found' ? users : (
                 <ul className="user-list">
                   {users.map((user, index) => (
-                    <li key={index} className="user-item">
+                    <li key={index} className="user-item" onClick={()=> navigateToUser(user.username)}>
                       <img src={user.profilePicture || "https://static.vecteezy.com/system/resources/thumbnails/019/879/186/small_2x/user-icon-on-transparent-background-free-png.png"}
                       alt={`${user.name}'s avatar`}
                       className="user-avatar" 

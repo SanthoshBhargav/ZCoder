@@ -14,14 +14,26 @@ router.get("/:username", async (req, res) => {
   try {
     const usersList = await User.find({
       Username: { $regex: `^${username}`, $options: "i" },
-    }).select("_id Username profilePicture"); // Only select _id and Username fields
+    }) // Only select _id and Username fields
 
     if (usersList && usersList.length > 0) {
       // Map to return array of objects with id and username
       const result = usersList.map((user) => ({
         id: user._id,
         username: user.Username,
-        profilePicture: user.profilePicture , // Default picture if not set
+        profilePicture: user.profilePicture , 
+        codeforcesHandle: user.codeforcesHandle || "",
+        codeforcesRating: user.codeforcesRating || "",
+        email: user.email || "",
+        phoneNumber: user.phoneNumber || "",
+        name: user.name || "",
+        role: user.role || "user", // Default to 'user' if not set
+        location: user.location || "",
+        programmingLanguages: user.programmingLanguages || [],
+        skills: user.skills || [],
+        degrees: user.degrees || [],
+        experience: user.experience || [],
+        languages:  user.languages || [],
       }));
       res.status(200).send(result);
     } else {
