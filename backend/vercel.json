@@ -13,7 +13,7 @@
     }
     ],
     "env": {
-    "MONGODB_URI" : "mongodb+srv://gsb:49lvx3c9@zcoder.fpqbsey.mongodb.net/",
+    "MONGODB_URI" : "mongodb+srv://gsb:49lvx3c9@zcoder.fpqbsey.mongodb.net/zcoder",
     "GROQ_API_KEY" : "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"
     }
 }
