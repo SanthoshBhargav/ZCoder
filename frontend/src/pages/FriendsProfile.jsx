@@ -21,7 +21,7 @@
 //   useEffect(() => {
 //     const fetchUserData = async () => {
 //       try {
-//         const res = await fetch(`http://localhost:3000/users/${username}`,
+//         const res = await fetch(`https://zcoder-backend.vercel.app/users/${username}`,
 //           {
 //             method: 'GET',
 //             headers: {
@@ -163,7 +163,7 @@ const FriendsProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/users/${username}`,
+        const res = await fetch(`https://zcoder-backend.vercel.app/users/${username}`,
           {
             method: 'GET',
             headers: {
@@ -202,7 +202,7 @@ const FriendsProfile = () => {
   const handleProfileUpdate = async (updatedData) => {
     try {
       const jwtoken = localStorage.getItem('jwtoken');
-      const res = await fetch('http://localhost:3000/user/profile/update', {
+      const res = await fetch('https://zcoder-backend.vercel.app/user/profile/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

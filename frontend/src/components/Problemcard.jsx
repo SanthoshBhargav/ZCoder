@@ -20,7 +20,7 @@ const ProblemCard = ({
   useEffect(() => {
     const checkBookmark = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/bookmarks", {
+        const response = await axios.get("https://zcoder-backend.vercel.app/bookmarks", {
           headers: { Authorization: `Bearer ${localStorage.getItem("jwtoken")}` },
         });
         setIsBookmarked(response.data.bookmarks.includes(titleSlug));
@@ -35,7 +35,7 @@ const ProblemCard = ({
     e.stopPropagation();
     try {
       await axios.post(
-        "http://localhost:3000/bookmarks/toggle",
+        "https://zcoder-backend.vercel.app/bookmarks/toggle",
         { problemSlug: titleSlug },
         { headers: { Authorization: `Bearer ${localStorage.getItem("jwtoken")}` } }
       );

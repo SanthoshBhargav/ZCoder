@@ -25,7 +25,7 @@ const Discussions = () => {
   useEffect(() => {
     const fetchSolutions = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/solutions/${titleSlug}`);
+        const res = await axios.get(`https://zcoder-backend.vercel.app/api/solutions/${titleSlug}`);
         setSolutions(res.data);
       } catch (err) {
         setError(err.response?.data?.message || err.message);
@@ -38,7 +38,7 @@ const Discussions = () => {
 
   const handleVote = async (solutionId, voteType) => {
     try {
-      await axios.post(`http://localhost:3000/api/solutions/vote`, {
+      await axios.post(`https://zcoder-backend.vercel.app/api/solutions/vote`, {
         solutionId,
         voteType,
       });

@@ -90,7 +90,7 @@ function Bookmarks() {
     // Fetch bookmarks from the backend
     async function fetchBookmarks() {
       try {
-        const response = await fetch("http://localhost:3000/bookmarks", {
+        const response = await fetch("https://zcoder-backend.vercel.app/bookmarks", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

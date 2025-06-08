@@ -27,7 +27,7 @@ function RoomPage() {
   });
 
   useEffect(() => {
-    socket.current = io("http://localhost:3000");
+    socket.current = io("https://zcoder-backend.vercel.app");
 
     socket.current.emit("join-room", { roomId, username });
 

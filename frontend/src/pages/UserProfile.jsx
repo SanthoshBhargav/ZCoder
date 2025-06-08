@@ -47,7 +47,7 @@ const UserProfile = () => {
     const fetchUserData = async () => {
       const jwtoken = localStorage.getItem('jwtoken');
       try {
-        const res = await fetch('http://localhost:3000/user/profile', {
+        const res = await fetch('https://zcoder-backend.vercel.app/user/profile', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${jwtoken}`
@@ -105,7 +105,7 @@ const UserProfile = () => {
   const handleProfileUpdate = async (updatedData) => {
     try {
       const jwtoken = localStorage.getItem('jwtoken');
-      const res = await fetch('http://localhost:3000/user/profile/update', {
+      const res = await fetch('https://zcoder-backend.vercel.app/user/profile/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

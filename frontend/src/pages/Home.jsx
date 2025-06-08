@@ -30,7 +30,7 @@ function Home() {
     if (query.length > 0) {
       const searchTimer = setTimeout(async () => {
         try {
-          const response = await fetch(`http://localhost:3000/users/${query}`);
+          const response = await fetch(`https://zcoder-backend.vercel.app/users/${query}`);
           if(!response.ok) {
             setUsers('No users found');
           }else{

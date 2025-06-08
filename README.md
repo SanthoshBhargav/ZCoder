@@ -31,7 +31,7 @@ npm run dev
 also create a new file called .env in the frontend folder at the same level of src,public. The format for it is
 ```
 VITE_API_URL = https://alfa-leetcode-api.onrender.com
-VITE_BACKEND_URL = http://localhost:3000
+VITE_BACKEND_URL = https://zcoder-backend.vercel.app
 VITE_JUDGE = https://emkc.org/api/v2/piston/execute
 ```
 Then visit http://localhost:5173/

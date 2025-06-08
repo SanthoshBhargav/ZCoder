@@ -19,7 +19,7 @@ const ProblemDetail = () => {
   const [isResizing, setIsResizing] = useState(false);
   const [leftPanelWidth, setLeftPanelWidth] = useState(50); // Track width as percentage
 
-  const backend = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+  const backend = import.meta.env.VITE_BACKEND_URL || "https://zcoder-backend.vercel.app";
   const LEETCODE_API = `https://leetcode-api-mu.vercel.app/select?titleSlug=${titleSlug}`;
 
   useEffect(() => {
