@@ -1,0 +1,106 @@
+.streak-heatmap {
+  width: 100%;
+  padding: 1rem;
+}
+
+.heatmap-wrapper {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.day-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 22px;
+}
+
+.day-label {
+  height: 14px;
+  font-size: 10px;
+  color: var(--text-primary);
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.month-labels {
+  display: grid;
+  grid-template-rows: auto;
+  height: 18px;
+}
+
+.month-label {
+  font-size: 10px;
+  color: var(--text-primary);
+  opacity: 0.6;
+}
+
+.cells-grid {
+  display: flex;
+  gap: 2px;
+}
+
+.heatmap-week {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.heatmap-cell {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  transition: transform 0.15s ease;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.3);
+}
+
+.heatmap-cell.empty {
+  background: var(--secondary-background);
+  opacity: 0.4;
+}
+
+.heatmap-cell.solved {
+  background: var(--success);
+  opacity: 1;
+}
+
+.heatmap-cell.future {
+  background: var(--secondary-background);
+  opacity: 0.15;
+}
+
+.heatmap-cell.today {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 1px;
+}
+
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.legend-label {
+  font-size: 10px;
+  color: var(--text-primary);
+  opacity: 0.5;
+}
+
+.heatmap-legend .heatmap-cell {
+  width: 12px;
+  height: 12px;
+}

@@ -5,6 +5,23 @@ import ProbCodeEditor from "../components/ProbCodeEditor";
 import "../styles/ProblemDetail.css";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 
+// Simple markdown to HTML formatter
+function formatMarkdown(text) {
+  if (!text) return "";
+  return text
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+    .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n/g, '<br />');
+}
+
 const ProblemDetail = () => {
   const { titleSlug } = useParams();
   const navigate = useNavigate();
@@ -17,7 +34,10 @@ const ProblemDetail = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
-  const [leftPanelWidth, setLeftPanelWidth] = useState(50); // Track width as percentage
+  const [leftPanelWidth, setLeftPanelWidth] = useState(50);
+  const [isReviewing, setIsReviewing] = useState(false);
+  const [codeReview, setCodeReview] = useState(null);
+  const [showReview, setShowReview] = useState(false);
 
   const backend = import.meta.env.VITE_BACKEND_URL || "https://zcoder-backend.vercel.app";
   const LEETCODE_API = `https://leetcode-api-mu.vercel.app/select?titleSlug=${titleSlug}`;
@@ -95,6 +115,47 @@ const ProblemDetail = () => {
   const handleDividerMouseDown = (e) => {
     e.preventDefault();
     setIsResizing(true);
+  };
+
+  const handleCodeReview = async () => {
+    if (!code.trim()) {
+      alert("Write some code first to get a review!");
+      return;
+    }
+    setIsReviewing(true);
+    setShowReview(true);
+    setCodeReview(null);
+    try {
+      const token = localStorage.getItem("jwtoken");
+      const res = await axios.post(
+        `${backend}/api/review`,
+        {
+          code,
+          language: "javascript",
+          problemContext: data?.questionTitle || titleSlug,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setCodeReview(res.data.review);
+    } catch (err) {
+      setCodeReview("**Error:** Failed to get code review. Please try again.");
+    } finally {
+      setIsReviewing(false);
+    }
+  };
+
+  const handleMarkSolved = async () => {
+    try {
+      const token = localStorage.getItem("jwtoken");
+      await axios.post(
+        `${backend}/api/streak/record`,
+        { difficulty: data?.difficulty || "Easy" },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Problem marked as solved! Streak updated. 🔥");
+    } catch (err) {
+      console.error("Error recording streak:", err);
+    }
   };
 
   const handleSubmit = async () => {
@@ -224,10 +285,19 @@ const ProblemDetail = () => {
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </button>
-            {/* 
-            <button className="discussions-button" onClick={handleViewDiscussions}>
-              Discussions
-            </button> */}
+            <button
+              className="review-button"
+              onClick={handleCodeReview}
+              disabled={isReviewing}
+            >
+              {isReviewing ? "🤖 Reviewing..." : "🤖 AI Review"}
+            </button>
+            <button
+              className="solved-button"
+              onClick={handleMarkSolved}
+            >
+              ✅ Mark Solved
+            </button>
           </div>
 
           {submissionResult && (
@@ -235,6 +305,22 @@ const ProblemDetail = () => {
               <h3>Result</h3>
               <p>{submissionResult.message}</p>
               {submissionResult.details && <pre>{submissionResult.details}</pre>}
+            </div>
+          )}
+
+          {showReview && (
+            <div className="code-review-panel">
+              <div className="review-header">
+                <h3>🤖 AI Code Review</h3>
+                <button className="close-review" onClick={() => setShowReview(false)}>✕</button>
+              </div>
+              <div className="review-content">
+                {isReviewing ? (
+                  <div className="review-loading">Analyzing your code...</div>
+                ) : (
+                  <div className="review-markdown" dangerouslySetInnerHTML={{ __html: formatMarkdown(codeReview) }} />
+                )}
+              </div>
             </div>
           )}
         </div>

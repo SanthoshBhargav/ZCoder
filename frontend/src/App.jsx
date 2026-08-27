@@ -16,6 +16,8 @@ import UserProfile from './pages/UserProfile';
 import FriendsProfile from "./pages/FriendsProfile";
 import Bookmarks from "./pages/Bookmarks";
 import SoloCodeEditor from "./components/SoloCodeEditor";
+import Streak from "./pages/Streak";
+import Leaderboard from "./pages/Leaderboard";
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
         <Route path="/user/:id" element={<FriendsProfile />} />
         <Route path="/bookmarks" element={<Bookmarks/>} />
         <Route path="/code-editor" element={<SoloCodeEditor />} />
+        <Route path="/streak" element={<Streak />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Routes>
     </BrowserRouter>
   );

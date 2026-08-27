@@ -47,6 +47,8 @@ function Header() {
         <ul className={`nav-links${menuOpen ? " show" : ""}`}>
           <li><NavLink to="/" onClick={handleLinkClick}>Home</NavLink></li>
           <li><NavLink to="/dashboard" onClick={handleLinkClick}>Dashboard</NavLink></li>
+          <li><NavLink to="/streak" onClick={handleLinkClick}>🔥 Streak</NavLink></li>
+          <li><NavLink to="/leaderboard" onClick={handleLinkClick}>🏆 Leaderboard</NavLink></li>
           <li><NavLink to="/rooms" onClick={handleLinkClick}>Rooms</NavLink></li>
           <li><NavLink to="/code-editor" onClick={handleLinkClick}>Online IDE</NavLink></li>
         </ul>
