@@ -14,6 +14,9 @@ const profileRoute = require("./routes/Profile.js");
 const socketHandler = require("./socketHandler");
 const bookmarksRoute = require("./routes/Bookmarks.js");
 const usersRoute = require("./routes/usersRoute.js");
+const streakRoute = require("./routes/Streak.js");
+const codeReviewRoute = require("./routes/CodeReview.js");
+const leaderboardRoute = require("./routes/Leaderboard.js");
 const User = require("./models/UserModel.js");
 const bodyParser = require("body-parser");
 require("dotenv").config();
@@ -48,6 +51,9 @@ app.use("/api/solutions", solutionsRoute);
 app.use("/user", profileRoute);
 app.use("/bookmarks", bookmarksRoute);
 app.use("/users", usersRoute);
+app.use("/api/streak", streakRoute);
+app.use("/api", codeReviewRoute);
+app.use("/api/leaderboard", leaderboardRoute);
 // app.get("/users/:username", async (req, res) => {
 //   const { username } = req.params;
 //   if (!username || username.trim() === "") {
